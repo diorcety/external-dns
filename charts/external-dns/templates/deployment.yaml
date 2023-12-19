@@ -71,7 +71,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           {{- with .Values.env }}
           env:
-            {{- toYaml . | nindent 12 }}
+            {{- tpl (toYaml .) $ | nindent 12 }}
           {{- end }}
           args:
             - --log-level={{ .Values.logLevel }}
@@ -98,7 +98,7 @@ spec:
             - --namespace={{ .Release.Namespace }}
             {{- end }}
             {{- range .Values.domainFilters }}
-            - --domain-filter={{ . }}
+            - --domain-filter={{ tpl . $ }}
             {{- end }}
             - --provider={{ tpl .Values.provider $ }}
           {{- range .Values.extraArgs }}
